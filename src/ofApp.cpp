@@ -55,7 +55,11 @@ void ofApp::update(){
             }
             else if(m.getArgType(i) == OFXOSC_TYPE_FLOAT){
                 msg_string += ofToString(m.getArgAsFloat(i));
-                scale = m.getArgAsFloat(i);
+                //scale = m.getArgAsFloat(i);
+                
+                //-----Audio Out example code
+                targetFrequency = m.getArgAsFloat(i);
+                phaseAdderTarget = (targetFrequency / (float) sampleRate) * TWO_PI;
             }
             else if(m.getArgType(i) == OFXOSC_TYPE_STRING){
                 msg_string += m.getArgAsString(i);
@@ -85,6 +89,8 @@ void ofApp::draw(){
     for(int i = 0; i < NUM_MSG_STRINGS; i++){
         ofDrawBitmapString(msg_strings[i], 10, 40 + 15 * i);
     }
+    
+    
 }
 
 //--------------------------------------------------------------
@@ -96,11 +102,11 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels){
         phase -= TWO_PI;
     }
     
-    phaseAdder = 0.95f * phaseAdder + 0.05f;
+    phaseAdder = 0.95f * phaseAdder + 0.05f * phaseAdderTarget;
     for (int i = 0; i < bufferSize; i++){
         phase += phaseAdder;
         float sample = sin(phase);
-        audio[i] = output[i*nChannels    ] = sample * volume * scale;
+        audio[i] = output[i*nChannels    ] = sample * volume;
     }
     
 }
