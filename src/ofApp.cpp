@@ -43,7 +43,7 @@ void ofApp::update(){
         
         // unrecognized message: display on the bottom of the screen
         string msg_string;
-        msg_string = m.getAddress();
+        msg_string = m.getAddress();        //find address
         msg_string += ": ";
         for(int i = 0; i < m.getNumArgs(); i++){
             // get the argument type

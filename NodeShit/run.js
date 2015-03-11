@@ -18,11 +18,22 @@ console.log("sending messages to http://localhost:" + outport);
 
 //  OSC Stuff
 
-var sendData = function(data) {
+var sendData = function(piezoOne, piezoTwo, piezoThree ) {
   var buf;
   buf = osc.toBuffer({
-    address: "/data",
-    args: data
+    elements: [
+      {
+        address: "/piezoOne",
+        args: piezoOne
+      }, {
+          address: "/piezoTwo",
+          args: piezoTwo
+        },  {
+              address: "/piezoThree",
+              args: piezoThree
+            }
+      }
+    ]
   });
   return udp.send(buf, 0, buf.length, outport, "localhost");
 };
@@ -51,13 +62,39 @@ Bean.discover(function(bean){
       function(data){
         if(data && data.length>=2){
           var value = data[1]<<8 || (data[0]);
-          sendData([value]);
+          sendData([value], );
           console.log("one:", value);
         }
       },
       //called when the notify is successfully or unsuccessfully setup
       function(error){
         if(error) console.log("one setup: ", error);
+      });
+
+    bean.notifyTwo(
+      //called when theres data
+      function(data){
+        if(data && data.length>=2){
+          var value = data[1]<<8 || (data[0]);
+          console.log("two:", value);
+        }
+      },
+      //called when the notify is successfully or unsuccessfully setup
+      function(error){
+        if(error) console.log("two setup: ", error);
+      });
+
+    bean.notifyThree(
+      //called when theres data
+      function(data){
+        if(data && data.length>=2){
+          var value = data[1]<<8 || (data[0]);
+          console.log("three:", value);
+        }
+      },
+      //called when the notify is successfully or unsuccessfully setup
+      function(error){
+        if(error) console.log("two setup: ", error);
       });
 
   });
