@@ -48,7 +48,7 @@ noble.on('discover', function(peripheral) {
         //
         // This must be the service we were looking for.
         //
-        console.log('found service:', service);
+        console.log('found service:', service.uuid);
 
         //
         // So, discover its characteristics.
@@ -60,7 +60,7 @@ noble.on('discover', function(peripheral) {
             // Loop through each characteristic and match them to the
             // UUIDs that we know about.
             //
-            console.log('found characteristic:', characteristic);
+            console.log('found characteristic:', characteristic.uuid);
 
             if (pizzaCrustCharacteristicUuid == characteristic.uuid) {
               pizzaCrustCharacteristic = characteristic;
@@ -98,17 +98,18 @@ function bakePizza() {
   // Pick the crust.
   //
   var crust = new Buffer(1);
-  crust.writeUInt8(0, pizza.PizzaCrust.THIN);
+  crust.writeUInt8(pizza.PizzaCrust.THIN, 0);
   pizzaCrustCharacteristic.write(crust, false, function(err) {
     if (!err) {
       //
       // Pick the toppings.
       //
       var toppings = new Buffer(2);
-      toppings.writeUInt16LE(0,
+      toppings.writeUInt16BE(
         pizza.PizzaToppings.EXTRA_CHEESE |
         pizza.PizzaToppings.CANADIAN_BACON |
-        pizza.PizzaToppings.PINEAPPLE
+        pizza.PizzaToppings.PINEAPPLE,
+        0
       );
       pizzaToppingsCharacteristic.write(toppings, false, function(err) {
         if (!err) {
@@ -136,9 +137,9 @@ function bakePizza() {
             //
             // Bake at 450 degrees!
             //
-            var temperature = new Buffer(1);
-            temperature.writeUInt8(450);
-            pizzaBakeCharacteristic.write(temperature, function(err) {
+            var temperature = new Buffer(2);
+            temperature.writeUInt16BE(450, 0);
+            pizzaBakeCharacteristic.write(temperature, false, function(err) {
               if (err) {
                 console.log('bake error');
               }
