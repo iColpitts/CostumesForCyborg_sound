@@ -18,20 +18,13 @@ console.log("sending messages to http://localhost:" + outport);
 
 //  OSC Stuff
 
-var sendData = function(piezoOne, piezoTwo, piezoThree ) {
+var sendData = function(piezoVal ) {
   var buf;
   buf = osc.toBuffer({
     elements: [
       {
-        address: "/piezoOne",
-        args: piezoOne
-      }, {
-          address: "/piezoTwo",
-          args: piezoTwo
-        },  {
-              address: "/piezoThree",
-              args: piezoThree
-            }
+        address: "/p1",
+        args: piezoVal
       }
     ]
   });
@@ -62,7 +55,7 @@ Bean.discover(function(bean){
       function(data){
         if(data && data.length>=2){
           var value = data[1]<<8 || (data[0]);
-          sendData([value], );
+          sendData([value]);
           console.log("one:", value);
         }
       },
@@ -76,6 +69,7 @@ Bean.discover(function(bean){
       function(data){
         if(data && data.length>=2){
           var value = data[1]<<8 || (data[0]);
+          sendData([value], "/p2");
           console.log("two:", value);
         }
       },
@@ -89,6 +83,7 @@ Bean.discover(function(bean){
       function(data){
         if(data && data.length>=2){
           var value = data[1]<<8 || (data[0]);
+          sendData([value], "/p3");
           console.log("three:", value);
         }
       },
