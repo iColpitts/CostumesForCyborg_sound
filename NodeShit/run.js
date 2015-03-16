@@ -8,6 +8,8 @@
 
 var Bean = require('ble-bean');
 
+var intervalId;
+
 var osc = require('osc-min');
 
 var dgram = require('dgram');
@@ -18,12 +20,12 @@ console.log("sending messages to http://localhost:" + outport);
 
 //  OSC Stuff
 
-var sendData = function(piezoVal ) {
+var sendData = function(piezoVal, address ) {
   var buf;
   buf = osc.toBuffer({
     elements: [
       {
-        address: "/p1",
+        address: address,
         args: piezoVal
       }
     ]
@@ -44,18 +46,31 @@ Bean.discover(function(bean){
     console.log(data.toString());
   });
 
+  bean.on("accell", function(x, y, z, valid){
+    var status = valid ? "valid" : "invalid";
+    console.log("received " + status + " accell\tx:\t" + x + "\ty:\t" + y + "\tz:\t" + z );
+  });
+
   bean.on("disconnect", function(){
     process.exit();
   });
 
   bean.connectAndSetup(function(){
+    var readData = function() {
+      bean.requestAccell(
+        function(){
+          console.log("request accell sent");
+      });
+    }
+
+    intervalId = setInterval(readData, 100);
 
     bean.notifyOne(
       //called when theres data
       function(data){
         if(data && data.length>=2){
           var value = data[1]<<8 || (data[0]);
-          sendData([value]);
+          sendData([value], "/p1");
           console.log("one:", value);
         }
       },
