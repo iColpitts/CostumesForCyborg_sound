@@ -33,6 +33,27 @@ var sendData = function(piezoVal, address ) {
   return udp.send(buf, 0, buf.length, outport, "localhost");
 };
 
+var sendAccelData = function( x, y, z) {
+  var buf;
+  buf = osc.toBuffer({
+    elements: [
+      {
+        address: "/x",
+        args: x
+      },
+      {
+        address: "/y",
+        args: y
+      },
+      {
+        address: "/z",
+        args: z
+      }
+    ]
+  });
+  return udp.send(buf, 0, buf.length, outport, "localhost");
+}
+
 // Bean communication
 //-----------------------
 var intervalId;
@@ -49,6 +70,7 @@ Bean.discover(function(bean){
   bean.on("accell", function(x, y, z, valid){
     var status = valid ? "valid" : "invalid";
     console.log("received " + status + " accell\tx:\t" + x + "\ty:\t" + y + "\tz:\t" + z );
+    sendAccelData(x, y, z)
   });
 
   bean.on("disconnect", function(){
@@ -63,7 +85,7 @@ Bean.discover(function(bean){
       });
     }
 
-    intervalId = setInterval(readData, 100);
+    intervalId = setInterval(readData, 700);
 
     bean.notifyOne(
       //called when theres data
