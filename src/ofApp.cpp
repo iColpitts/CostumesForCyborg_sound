@@ -59,13 +59,13 @@ void ofApp::update(){
                     //scale = m.getArgAsFloat(i);
                 if ( m.getAddress() == "/p1"){
                     //-----Audio Out example code
-                    targetFrequency = m.getArgAsFloat(i) * 4;
+                    targetFrequency = m.getArgAsFloat(i) * 10;
                     phaseAdderTarget = (targetFrequency / (float) sampleRate) * TWO_PI;
                 }
                 if ( m.getAddress() == "/p2"){
                     //-----Audio Out example code
-                    targetFrequency2 = m.getArgAsFloat(i);
-                    phaseAdderTarget2 = (targetFrequency2 / (float) sampleRate) * TWO_PI;
+                    targetFrequency = m.getArgAsFloat(i) * 4;
+                    phaseAdderTarget = (targetFrequency / (float) sampleRate) * TWO_PI;
                 }
                 
             }
