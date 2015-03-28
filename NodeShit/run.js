@@ -33,10 +33,10 @@ var sendData = function(piezoVal, address ) {
   return udp.send(buf, 0, buf.length, outport, "localhost");
 };
 
-}
 
 // Bean communication
 //-----------------------
+
 var intervalId;
 var connectedBean;
 

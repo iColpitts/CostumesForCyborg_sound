@@ -54,12 +54,20 @@ void ofApp::update(){
                 msg_string += ofToString(m.getArgAsInt32(i));
             }
             else if(m.getArgType(i) == OFXOSC_TYPE_FLOAT){
-                msg_string += ofToString(m.getArgAsFloat(i));
-                //scale = m.getArgAsFloat(i);
                 
-                //-----Audio Out example code
-                targetFrequency = m.getArgAsFloat(i);
-                phaseAdderTarget = (targetFrequency / (float) sampleRate) * TWO_PI;
+                    msg_string += ofToString(m.getArgAsFloat(i));
+                    //scale = m.getArgAsFloat(i);
+                if ( m.getAddress() == "/p1"){
+                    //-----Audio Out example code
+                    targetFrequency = m.getArgAsFloat(i) * 4;
+                    phaseAdderTarget = (targetFrequency / (float) sampleRate) * TWO_PI;
+                }
+                if ( m.getAddress() == "/p2"){
+                    //-----Audio Out example code
+                    targetFrequency2 = m.getArgAsFloat(i);
+                    phaseAdderTarget2 = (targetFrequency2 / (float) sampleRate) * TWO_PI;
+                }
+                
             }
             else if(m.getArgType(i) == OFXOSC_TYPE_STRING){
                 msg_string += m.getArgAsString(i);
@@ -108,6 +116,13 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels){
         float sample = sin(phase);
         audio[i] = output[i*nChannels    ] = sample * volume;
     }
+    
+//    phaseAdder2 = 0.95f * phaseAdder2 + 0.05f * phaseAdderTarget2;
+//    for (int i = 0; i < bufferSize; i++){
+//        phase2 += phaseAdder2;
+//        float sample = sin(phase2);
+//        audio[i] = output[i*nChannels    ] = sample * volume;
+//    }
     
 }
 

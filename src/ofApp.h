@@ -39,9 +39,13 @@ class ofApp : public ofBaseApp{
         
         //------------------- for the simple sine wave synthesis
         float 	targetFrequency;
+        float   targetFrequency2;
         float 	phase;
+        float   phase2;
         float 	phaseAdder;
+        float   phaseAdder2;
         float 	phaseAdderTarget;
+        float   phaseAdderTarget2;
 
 		
 };
