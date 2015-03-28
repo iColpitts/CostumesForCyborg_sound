@@ -33,25 +33,6 @@ var sendData = function(piezoVal, address ) {
   return udp.send(buf, 0, buf.length, outport, "localhost");
 };
 
-var sendAccelData = function( x, y, z) {
-  var buf;
-  buf = osc.toBuffer({
-    elements: [
-      {
-        address: "/x",
-        args: x
-      },
-      {
-        address: "/y",
-        args: y
-      },
-      {
-        address: "/z",
-        args: z
-      }
-    ]
-  });
-  return udp.send(buf, 0, buf.length, outport, "localhost");
 }
 
 // Bean communication
@@ -67,25 +48,11 @@ Bean.discover(function(bean){
     console.log(data.toString());
   });
 
-  bean.on("accell", function(x, y, z, valid){
-    var status = valid ? "valid" : "invalid";
-    console.log("received " + status + " accell\tx:\t" + x + "\ty:\t" + y + "\tz:\t" + z );
-    sendAccelData(x, y, z)
-  });
-
   bean.on("disconnect", function(){
     process.exit();
   });
 
   bean.connectAndSetup(function(){
-    var readData = function() {
-      bean.requestAccell(
-        function(){
-          console.log("request accell sent");
-      });
-    }
-
-    intervalId = setInterval(readData, 700);
 
     bean.notifyOne(
       //called when theres data
@@ -108,20 +75,6 @@ Bean.discover(function(bean){
           var value = data[1]<<8 || (data[0]);
           sendData([value], "/p2");
           console.log("two:", value);
-        }
-      },
-      //called when the notify is successfully or unsuccessfully setup
-      function(error){
-        if(error) console.log("two setup: ", error);
-      });
-
-    bean.notifyThree(
-      //called when theres data
-      function(data){
-        if(data && data.length>=2){
-          var value = data[1]<<8 || (data[0]);
-          sendData([value], "/p3");
-          console.log("three:", value);
         }
       },
       //called when the notify is successfully or unsuccessfully setup
