@@ -1,0 +1,17 @@
+{
+  "name": "iz",
+  "version": "1.0.0",
+  "description": "BLE Device Connection",
+  "main": "bean-to-osc.js",
+  "dependencies": {
+    "lodash": "^3.6.0",
+    "noble": "^0.3.11",
+    "osc-min": "^0.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
