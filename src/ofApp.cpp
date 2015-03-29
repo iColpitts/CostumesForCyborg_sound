@@ -56,17 +56,17 @@ void ofApp::update(){
             else if(m.getArgType(i) == OFXOSC_TYPE_FLOAT){
                 
                     msg_string += ofToString(m.getArgAsFloat(i));
-                    //scale = m.getArgAsFloat(i);
-                if ( m.getAddress() == "/p1"){
+                    scale = m.getArgAsFloat(i);
+                  if ( m.getArgAsFloat(0) == 1){
                     //-----Audio Out example code
-                    targetFrequency = m.getArgAsFloat(i) * 10;
+                    targetFrequency = m.getArgAsFloat(1) * 8;
                     phaseAdderTarget = (targetFrequency / (float) sampleRate) * TWO_PI;
-                }
-                if ( m.getAddress() == "/p2"){
+                  }
+                  if ( m.getArgAsFloat(0) == 2){
                     //-----Audio Out example code
-                    targetFrequency = m.getArgAsFloat(i) * 4;
+                    targetFrequency = m.getArgAsFloat(1) * 3;
                     phaseAdderTarget = (targetFrequency / (float) sampleRate) * TWO_PI;
-                }
+                  }
                 
             }
             else if(m.getArgType(i) == OFXOSC_TYPE_STRING){
