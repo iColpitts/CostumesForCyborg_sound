@@ -14,12 +14,19 @@ void ofApp::setup(){
     //Audio Setup
     int bufferSize		= 512;
     sampleRate 			= 44100;
+    volume				= 0.1f;
+    
     phase 				= 0;
     phaseAdder 			= 0.0f;
     phaseAdderTarget 	= 0.0f;
-    volume				= 0.1f;
     
-    audio.assign(bufferSize, 0.0);
+    rAudio.assign(bufferSize, 0.0);
+    
+    phase2 				= 0;
+    phaseAdder2 		= 0.0f;
+    phaseAdderTarget2 	= 0.0f;
+
+    lAudio.assign(bufferSize, 0.0);
     
     //soundStream.listDevices();
     
@@ -64,8 +71,8 @@ void ofApp::update(){
                   }
                   if ( m.getArgAsFloat(0) == 2){
                     //-----Audio Out example code
-                    targetFrequency = m.getArgAsFloat(1) * 3;
-                    phaseAdderTarget = (targetFrequency / (float) sampleRate) * TWO_PI;
+                    targetFrequency2 = m.getArgAsFloat(1) * 3;
+                    phaseAdderTarget2 = (targetFrequency2 / (float) sampleRate) * TWO_PI;
                   }
                 
             }
@@ -114,15 +121,15 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels){
     for (int i = 0; i < bufferSize; i++){
         phase += phaseAdder;
         float sample = sin(phase);
-        audio[i] = output[i*nChannels    ] = sample * volume;
+        lAudio[i] = output[i*nChannels    ] = sample * volume;
     }
     
-//    phaseAdder2 = 0.95f * phaseAdder2 + 0.05f * phaseAdderTarget2;
-//    for (int i = 0; i < bufferSize; i++){
-//        phase2 += phaseAdder2;
-//        float sample = sin(phase2);
-//        audio[i] = output[i*nChannels    ] = sample * volume;
-//    }
+    phaseAdder2 = 0.95f * phaseAdder2 + 0.05f * phaseAdderTarget2;
+    for (int i = 0; i < bufferSize; i++){
+        phase2 += phaseAdder2;
+        float sample = sin(phase2);
+        rAudio[i] = output[i*nChannels  +1  ] = sample * volume;
+    }
     
 }
 
