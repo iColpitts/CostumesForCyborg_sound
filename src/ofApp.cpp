@@ -14,7 +14,7 @@ void ofApp::setup(){
     //Audio Setup
     int bufferSize		= 512;
     sampleRate 			= 44100;
-    volume				= 0.1f;
+    volume				= 0.3f;
     
     phase 				= 0;
     phaseAdder 			= 0.0f;
