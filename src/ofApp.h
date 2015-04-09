@@ -47,6 +47,10 @@ class ofApp : public ofBaseApp{
         float   phaseAdder2;
         float 	phaseAdderTarget;
         float   phaseAdderTarget2;
+    
+        //Video Variables
+        ofVideoPlayer 		video;
+        bool                frameByframe;
 
 		
 };

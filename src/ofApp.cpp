@@ -4,12 +4,12 @@
 void ofApp::setup(){
     
     // listen on the given port
-    cout << "listening for osc messages on port " << PORT << "\n";
+    //cout << "listening for osc messages on port " << PORT << "\n";
     receiver.setup(PORT);
     
-    current_msg_string = 0;
+    //current_msg_string = 0;
     
-    ofBackground(30, 30, 130);
+    //ofBackground(30, 30, 130);
     
     //Audio Setup
     int bufferSize		= 512;
@@ -35,6 +35,16 @@ void ofApp::setup(){
     
     soundStream.setup(this, 2, 0, sampleRate, bufferSize, 4);
     
+    //VideoPlayback
+    ofSetVerticalSync(true);
+    frameByframe = false;
+    
+    // Uncomment this to show movies with alpha channels
+    // fingerMovie.setPixelFormat(OF_PIXELS_RGBA);
+    
+    video.loadMovie("ThesisVid.mov");
+    video.play();
+    
     ofSetFrameRate(60);
 
 }
@@ -42,27 +52,20 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
 
+    video.update();
+    
     // check for waiting messages
     while(receiver.hasWaitingMessages()){
         // get the next message
         ofxOscMessage m;
         receiver.getNextMessage(&m);
         
-        // unrecognized message: display on the bottom of the screen
-        string msg_string;
-        msg_string = m.getAddress();        //find address
-        msg_string += ": ";
+        video.setVolume(0.0);
+        
         for(int i = 0; i < m.getNumArgs(); i++){
-            // get the argument type
-            msg_string += m.getArgTypeName(i);
-            msg_string += ":";
-            // display the argument - make sure we get the right type
             if(m.getArgType(i) == OFXOSC_TYPE_INT32){
-                msg_string += ofToString(m.getArgAsInt32(i));
             }
             else if(m.getArgType(i) == OFXOSC_TYPE_FLOAT){
-                
-                    msg_string += ofToString(m.getArgAsFloat(i));
                     scale = m.getArgAsFloat(i);
                   if ( m.getArgAsFloat(0) == 1){
                     //-----Audio Out example code
@@ -74,21 +77,12 @@ void ofApp::update(){
                     targetFrequency2 = m.getArgAsFloat(1) * 3;
                     phaseAdderTarget2 = (targetFrequency2 / (float) sampleRate) * TWO_PI;
                   }
-                
             }
             else if(m.getArgType(i) == OFXOSC_TYPE_STRING){
-                msg_string += m.getArgAsString(i);
             }
             else{
-                msg_string += "unknown";
             }
         }
-        // add to the list of strings to display
-        msg_strings[current_msg_string] = msg_string;
-        timers[current_msg_string] = ofGetElapsedTimef() + 5.0f;
-        current_msg_string = (current_msg_string + 1) % NUM_MSG_STRINGS;
-        // clear the next line
-        msg_strings[current_msg_string] = "";
         
     }
     
@@ -97,13 +91,20 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-    string buf;
-    buf = "listening for osc messages on port" + ofToString(PORT);
-    ofDrawBitmapString(buf, 10, 20);
+    //Draw video
+    ofSetHexColor(0xFFFFFF);
     
-    for(int i = 0; i < NUM_MSG_STRINGS; i++){
-        ofDrawBitmapString(msg_strings[i], 10, 40 + 15 * i);
-    }
+    video.draw(0,0);
+    ofSetHexColor(0x000000);
+    unsigned char * pixels = video.getPixels();
+    
+    //string buf;
+    //buf = "listening for osc messages on port" + ofToString(PORT);
+    //ofDrawBitmapString(buf, 10, 20);
+    
+    //for(int i = 0; i < NUM_MSG_STRINGS; i++){
+    //    ofDrawBitmapString(msg_strings[i], 10, 40 + 15 * i);
+    //}
     
     
 }
