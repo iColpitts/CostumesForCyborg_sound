@@ -51,6 +51,8 @@ class ofApp : public ofBaseApp{
         //Video Variables
         ofVideoPlayer 		video;
         bool                frameByframe;
+    
+        bool      bleConnect;
 
 		
 };

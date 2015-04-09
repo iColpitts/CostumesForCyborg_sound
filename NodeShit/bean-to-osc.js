@@ -121,12 +121,14 @@ var setupPeripheral = function(peripheral) {
         if (err) throw err;
 
         console.log('Connected!');
+        sendDataToOSC(3, 1);
         connectedBean = peripheral; // Sets the global to the Bean. Yuck.
 
         setupChars(connectedBean);
 
         connectedBean.on('disconnect', function(){
 	    	console.log("The bean disconnected, trying to find it...");
+	    	sendDataToOSC(4, 0);
         	noble.startScanning();
 	    });
 

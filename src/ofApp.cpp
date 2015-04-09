@@ -45,6 +45,8 @@ void ofApp::setup(){
     video.loadMovie("ThesisVid.mov");
     video.play();
     
+    bleConnect = 0;
+    
     ofSetFrameRate(60);
 
 }
@@ -77,14 +79,26 @@ void ofApp::update(){
                     targetFrequency2 = m.getArgAsFloat(1) * 3;
                     phaseAdderTarget2 = (targetFrequency2 / (float) sampleRate) * TWO_PI;
                   }
+                if ( m.getArgAsFloat(0) == 3){
+                    video.setVolume(0.0);
+                }
+                if (m.getArgAsFloat(0) == 4){
+                    video.setVolume(1.0);
+                    
+                    //targetFrequency = 0;
+                    phaseAdder = 0;
+                    
+                    //targetFrequency2 = 0;
+                    phaseAdder2 = 0;
+                }
             }
             else if(m.getArgType(i) == OFXOSC_TYPE_STRING){
-            }
-            else{
             }
         }
         
     }
+    
+    
     
 }
 
