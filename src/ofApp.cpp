@@ -55,6 +55,11 @@ void ofApp::setup(){
 void ofApp::update(){
 
     video.update();
+    //if (volumeBool == true)
+    //{
+    //    phaseAdder = 0;
+    //    phaseAdder2 = 0;
+    //}
     
     // check for waiting messages
     while(receiver.hasWaitingMessages()){
@@ -63,6 +68,7 @@ void ofApp::update(){
         receiver.getNextMessage(&m);
         
         video.setVolume(0.0);
+        //bool volumeBool = false;
         
         for(int i = 0; i < m.getNumArgs(); i++){
             if(m.getArgType(i) == OFXOSC_TYPE_INT32){
@@ -84,12 +90,13 @@ void ofApp::update(){
                 }
                 if (m.getArgAsFloat(0) == 4){
                     video.setVolume(1.0);
+                    //bool volumeBool = true;
                     
-                    //targetFrequency = 0;
-                    phaseAdder = 0;
+                    targetFrequency = 0;
+                    phaseAdderTarget = (targetFrequency / (float) sampleRate) * TWO_PI;;
                     
-                    //targetFrequency2 = 0;
-                    phaseAdder2 = 0;
+                    targetFrequency2 = 0;
+                    phaseAdderTarget2 = (targetFrequency / (float) sampleRate) * TWO_PI;;
                 }
             }
             else if(m.getArgType(i) == OFXOSC_TYPE_STRING){

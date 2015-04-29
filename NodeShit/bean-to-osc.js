@@ -121,7 +121,7 @@ var setupPeripheral = function(peripheral) {
         if (err) throw err;
 
         console.log('Connected!');
-        sendDataToOSC(3, 1);
+        sendDataToOSC(3, 0);
         connectedBean = peripheral; // Sets the global to the Bean. Yuck.
 
         setupChars(connectedBean);

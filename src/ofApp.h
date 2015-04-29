@@ -16,6 +16,8 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void gotMessage(ofMessage msg);
     
+        bool volumeBool = true;
+    
         // OSC reciever
         ofTrueTypeFont font;
         ofxOscReceiver receiver;
