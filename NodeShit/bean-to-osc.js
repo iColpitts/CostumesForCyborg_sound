@@ -152,7 +152,14 @@ noble.on('discover', function(peripheral) {
 
 });
 
-noble.startScanning();
+
+
+
+noble.on('stateChange', function(state) {
+	if (state == "poweredOn") {
+		noble.startScanning();
+	}
+});
 
 process.stdin.resume(); //so the program will not close instantly
 
