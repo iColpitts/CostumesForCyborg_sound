@@ -48,6 +48,12 @@ void ofApp::setup(){
     bleConnect = 0;
     
     ofSetFrameRate(60);
+    
+    //Terminal commands for beginning bean communication
+    //cout << ofSystem( "cd " + bleScript );
+    //cout << ofSystem( "pwd" );
+    //cout << ofSystem( "dos /usr/local/bin/node /Users/Izzie1/of_v0.8.4_osx_release/apps/myApps/CostumesForCyborg_sound/NodeShit/bean-to-osc.js");
+    
 
 }
 

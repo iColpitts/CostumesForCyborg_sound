@@ -56,5 +56,7 @@ class ofApp : public ofBaseApp{
     
         bool      bleConnect;
 
-		
+		//ble scripts path
+        string bleScript = "/Users/Izzie1/of_v0.8.4_osx_release/apps/myApps/CostumesForCyborg_sound/NodeShit/";
+        //string bleRunScript = "pwd";
 };
